@@ -319,6 +319,66 @@ JotForm.paymentExtrasOnTheFly([null,null,null,null,null,null,{"name":"prtyhhbr",
     // אתחול Google Sheets Loader
     let sheetsLoader;
     
+    /**
+     * קורא פרמטר מה-URL
+     * @param {string} name - שם הפרמטר
+     * @returns {string|null} - ערך הפרמטר או null
+     */
+    function getURLParameter(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+    
+    /**
+     * טוען נתונים אוטומטית אם יש מספר זהות ב-URL
+     */
+    async function autoLoadFromURL() {
+      const idFromURL = getURLParameter('id');
+      
+      if (!idFromURL || !sheetsLoader) {
+        return;
+      }
+      
+      // מחכה שהטופס יטען לחלוטין
+      const waitForForm = setInterval(() => {
+        const idInput = document.getElementById('input_57');
+        if (idInput) {
+          clearInterval(waitForForm);
+          
+          // ממלא את שדה תעודת הזהות
+          idInput.value = idFromURL;
+          
+          // מעדכן את JotForm אם צריך
+          if (typeof JotForm !== 'undefined' && JotForm.setValue) {
+            try {
+              JotForm.setValue('input_57', idFromURL);
+            } catch (e) {
+              // אם JotForm עדיין לא מוכן, ננסה שוב אחרי זמן
+              setTimeout(() => {
+                if (typeof JotForm !== 'undefined' && JotForm.setValue) {
+                  JotForm.setValue('input_57', idFromURL);
+                }
+              }, 500);
+            }
+          }
+          
+          // מחכה קצת שהטופס יטען ואז טוען את הנתונים
+          setTimeout(async () => {
+            try {
+              await sheetsLoader.loadAndFill(idFromURL);
+            } catch (error) {
+              console.error('שגיאה בטעינה אוטומטית:', error);
+            }
+          }, 800);
+        }
+      }, 100);
+      
+      // timeout למקרה שהטופס לא נטען
+      setTimeout(() => {
+        clearInterval(waitForForm);
+      }, 10000);
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
       // בדיקה אם יש הגדרות
       if (GOOGLE_APPS_SCRIPT_URL && GOOGLE_APPS_SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
@@ -360,6 +420,23 @@ JotForm.paymentExtrasOnTheFly([null,null,null,null,null,null,{"name":"prtyhhbr",
               }
             }
           });
+        }
+        
+        // טעינה אוטומטית אם יש מספר זהות ב-URL
+        // מחכה ש-JotForm יטען תחילה
+        if (typeof JotForm !== 'undefined' && JotForm.init) {
+          // אם JotForm כבר נטען, קרא מיד
+          if (document.readyState === 'complete') {
+            setTimeout(autoLoadFromURL, 1000);
+          } else {
+            // אחרת, חכה לטעינה
+            window.addEventListener('load', function() {
+              setTimeout(autoLoadFromURL, 1000);
+            });
+          }
+        } else {
+          // אם JotForm לא קיים, נסה בכל זאת
+          setTimeout(autoLoadFromURL, 1500);
         }
       } else {
         // הסתר את הכפתור אם לא הוגדרו הגדרות

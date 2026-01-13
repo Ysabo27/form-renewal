@@ -120,22 +120,37 @@ class GoogleSheetsLoader {
     parseData(data) {
         // ממיר את הנתונים לפורמט שמתאים לשדות הטופס
         const mapping = {
-            // שדות החבר
+            // שדות החבר - כותרות מהגיליון
+            'מס זהות': 'id',
             'תעודת זהות': 'id',
             'ת.ז.': 'id',
             'id': 'id',
             'שם משפחה': 'lastName',
             'שם פרטי': 'firstName',
             'שנת לידה': 'birthYear',
-            'שם האב': 'fatherName',
-            'רחוב': 'street',
-            'מספר בית': 'houseNumber',
+            'ישוב': 'city',
             'עיר': 'city',
+            'רחוב': 'street',
+            'מס בית': 'houseNumber',
+            'מספר בית': 'houseNumber',
+            'מס דירה': 'apartmentNumber',
+            'מיקוד': 'zipCode',
             'טלפון': 'phone',
             'טלפון נייד': 'phone',
             'אימייל': 'email',
             'דואר אלקטרוני': 'email',
             'email': 'email',
+            'שם האב': 'fatherName',
+            'קוד תשלום': 'paymentCode',
+            'ת.הצטרפות': 'joinDate',
+            'סניף': 'branch',
+            'ת.הרחקה': 'removalDate',
+            'סיבת הרחקה': 'removalReason',
+            'ת.גביה': 'collectionDate',
+            'פעיל': 'active',
+            'פעיל נוסף': 'additionalActive',
+            'הערות': 'notes',
+            'פוקד': 'visitor',
             
             // שדות בן/בת הזוג
             'תעודת זהות בן זוג': 'partnerId',

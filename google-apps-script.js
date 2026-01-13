@@ -19,7 +19,8 @@ const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE';
 // שם הגיליון (ברירת מחדל: Sheet1)
 const SHEET_NAME = 'Sheet1';
 
-// עמודת תעודת זהות (A = עמודה ראשונה, B = שנייה, וכו')
+// עמודת תעודת זהות (A = עמודה ראשונה = "מס זהות")
+// אם "מס זהות" לא בעמודה הראשונה, שנה את הערך כאן
 const ID_COLUMN = 'A';
 
 /**
