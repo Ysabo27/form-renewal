@@ -14,11 +14,10 @@
  */
 
 // הגדר כאן את ID של הגיליון (מהכתובת: https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit)
-const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE';
+const SPREADSHEET_ID = '1ktlMfAWApeCWcQKQv6ALj0GOAn5AHptHeRS2wONcn9c';
 
 // שם הגיליון (ברירת מחדל: Sheet1)
-const SHEET_NAME = 'Sheet1';
-
+const SHEET_NAME = 'ראשי';
 // עמודת תעודת זהות (A = עמודה ראשונה = "מס זהות")
 // אם "מס זהות" לא בעמודה הראשונה, שנה את הערך כאן
 const ID_COLUMN = 'A';
